@@ -1,3 +1,55 @@
+go.property("speed", 200)
+
+local updateCount = 0
+local startTime = os.time()
+
 function init(self)
-	go.set_position(vmath.vector3(250, 125, 0))
+	msg.post('.', "acquire_input_focus")
+	go.set_position(vmath.vector3(200, 100, 0.5))
+	self.direction = vmath.vector3(0, 0, 0)
+end
+
+function update(self, dt)
+
+	go.set_position(go.get_position() + self.direction * self.speed * dt)
+
+	self.direction = vmath.vector3(0, 0, 0)
+
+	updateCount = updateCount + 1
+
+	local currentTime = os.time()
+
+	local elapsedTime = os.difftime(currentTime, startTime)
+
+	local fps = updateCount / elapsedTime
+	
+	print("FPS are: " .. fps)
+	
+end
+
+function on_input(self, action_id, action)
+
+	if action_id == hash("up")then
+
+		self.direction.y = 1
+		
+
+	elseif action_id == hash("down") then
+
+		self.direction.y = -1
+		
+	elseif action_id == hash("right") then
+
+		self.direction.x = 1
+
+		sprite.set_hflip("arrowMoveCharacter#sprite", false)
+			
+	elseif action_id == hash("left") then
+
+		self.direction.x = -1
+
+		sprite.set_hflip("arrowMoveCharacter#sprite", true)
+
+	end
+	
 end
