@@ -1,0 +1,30 @@
+--Adrian
+
+go.property("speed", 200)
+
+function init(self)
+	go.set_position(vmath.vector3(600, 400, 0.5))
+	self.direction = vmath.vector3(0, 0, 0)
+end
+
+function update(self, dt)
+
+	go.set_position(go.get_position() + self.direction * self.speed * dt)
+
+	self.direction = vmath.vector3(0, 0, 0)
+
+end
+
+function on_message(self, message_id, message, sender)
+
+	print("Monkey received message")
+	
+	if message_id == hash("input") then 
+
+		local new_dir = message.direction
+		
+		self.direction = new_dir * -1
+		
+	end
+	
+end
